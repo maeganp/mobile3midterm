@@ -64,7 +64,7 @@ class ProductDetailScreen extends StatelessWidget {
                   ),
                   Chip(
                     label: Text(
-                      '[category]',
+                      product.category!,
                       style: const TextStyle(
                         fontSize: 15,
                         color: Colors.white,

@@ -36,7 +36,7 @@ class ProductsByCategoryScreen extends StatelessWidget {
               return ListTile(
                 title: Text(products[index].title!),
                 leading: Image.network(
-                  '[image]',
+                  products[index].image!,
                   height: 50,
                   width: 50,
                 ),
