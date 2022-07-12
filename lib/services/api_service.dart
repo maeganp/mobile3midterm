@@ -3,7 +3,7 @@ import 'package:mobilemidterm/models/cart.dart';
 import 'dart:convert';
 
 import 'package:mobilemidterm/models/product.dart';
-import 'package:mobilemidterm/models/products.dart';
+import 'package:mobilemidterm/models/cart_update.dart';
 
 class ApiService {
   static const String baseUrl = 'https://fakestoreapi.com';
@@ -78,5 +78,43 @@ class ApiService {
     }).catchError((error) => print(error));
   }
 
-  getCart(String s) {}
+  Future<Cart?> getCart(String userId) async {
+    return http.get(Uri.parse('$baseUrl/carts/$userId')).then((data) {
+      Cart cart = Cart();
+      if (data.statusCode == 200) {
+        final jsonData = json.decode(data.body);
+        cart = Cart.fromJson(jsonData);
+      }
+      return cart;
+    }).catchError((error) => print(error));
+  }
+
+  Future<void> deleteCart(String id) async {
+    return http
+        .delete(Uri.parse('$baseUrl/carts/$id'), headers: headers)
+        .then((data) {
+      if (data.statusCode == 200) {
+        final jsonData = json.decode(data.body);
+        print(data.statusCode);
+        print(jsonData);
+      }
+    }).catchError((err) => print(err));
+  }
+
+  Future<void> updateCart(int cartId, int productId) {
+    final cartUpdate =
+        CartUpdate(userId: cartId, date: DateTime.now(), products: [
+      {'productId': productId, 'quantity': 1}
+    ]);
+    return http
+        .put(Uri.parse('$baseUrl/carts/$cartId'),
+            headers: headers, body: json.encode(cartUpdate.toJson()))
+        .then((data) {
+      if (data.statusCode == 200) {
+        final jsonData = json.decode(data.body);
+        print(data.statusCode);
+        print(jsonData);
+      }
+    }).catchError((err) => print(err));
+  }
 }

@@ -35,7 +35,7 @@ class CartScreen extends StatelessWidget {
             itemBuilder: (_, index) {
               final product = products[index];
               return FutureBuilder(
-                future: _apiService.getProduct(product['product.productId']),
+                future: _apiService.getProduct(product['productId']),
                 builder: (BuildContext context,
                     AsyncSnapshot<Product?> productSnapshot) {
                   if (!productSnapshot.hasData) {
@@ -50,7 +50,7 @@ class CartScreen extends StatelessWidget {
                   return ListTile(
                     title: Text(p.title!),
                     leading: Image.network(
-                      '[image]',
+                      p.image!,
                       height: 40,
                     ),
                     subtitle: Text(
@@ -59,12 +59,12 @@ class CartScreen extends StatelessWidget {
                     trailing: IconButton(
                       icon: const Icon(Icons.delete, color: Colors.red),
                       onPressed: () async {
-                        // await deleteCart('1');
-                        // ScaffoldMessenger.of(context).showSnackBar(
-                        //   const SnackBar(
-                        //     content: Text('Cart deleted successfully.'),
-                        //   ),
-                        // );
+                        await _apiService.deleteCart('1');
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Cart deleted successfully.'),
+                          ),
+                        );
                       },
                     ),
                   );
